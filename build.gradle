@@ -1,0 +1,93 @@
+plugins {
+  id 'org.springframework.boot' version '2.5.2'
+  //id 'com.gorylenko.gradle-git-properties' version '2.3.1'
+  //id 'com.palantir.git-version' version '0.12.3'
+  id 'checkstyle'
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+group 'pro.hirooka'
+version version
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  // Spring
+  implementation('org.springframework.boot:spring-boot-starter-web') {
+    exclude module: 'spring-boot-starter-tomcat'
+  }
+  implementation 'org.springframework.boot:spring-boot-starter-jetty'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+  implementation 'org.springframework.boot:spring-boot-devtools'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+  // HLS
+  implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.69'
+  implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+  implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
+  // OpenAPI
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
+
+  // Micrometer Registry Prometheus
+  implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.7.2'
+
+  // Lombok
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+}
+
+bootJar {
+  launchScript()
+}
+
+bootRun {
+  if (project.hasProperty("jvmArgs")) {
+    jvmArgs = (project.jvmArgs.split("\\s+") as List)
+  }
+}
+
+test {
+  useJUnitPlatform()
+  if (project.hasProperty("jvmArgs")) {
+    jvmArgs = (project.jvmArgs.split("\\s+") as List)
+  }
+}
+
+configurations.all {
+  resolutionStrategy {
+    cacheChangingModulesFor 0, 'seconds'
+    cacheDynamicVersionsFor 0, 'seconds'
+  }
+}
+
+checkstyle {
+  toolVersion '8.44'
+}
+
+springBoot {
+  buildInfo()
+}
+
+task showVersion {
+  doFirst {
+    println "${version}"
+  }
+}
+
+processResources {
+  filesMatching("**/application.yml") {
+    expand(project.properties)
+  }
+}

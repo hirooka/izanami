@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: common_header(~{::title},~{})">
+  <title>...</title>
+</head>
+<body>
+
+<table class="table">
+  <tr th:each="videoFile : ${videoFileList}">
+    <form th:action="@{/files/transcode}" method="post" th:object="${videoFile}">
+      <input th:value="${videoFile.name}" type="hidden" id="name" name="name"/>
+      <input th:value="${videoFile.extension}" type="hidden" id="extension" name="extension"/>
+      <input th:value="${videoFile.isHls}" type="hidden" id="isHls" name="isHls"/>
+      <input th:value="${videoFile.isWatch}" type="hidden" id="isWatch" name="isWatch"/>
+      <input th:value="${videoFile.isM4v}" type="hidden" id="isM4v" name="isM4v"/>
+      <td th:text="${videoFile.name}">name</td>
+      <td th:text="${videoFile.extension}">extension</td>
+      <!--<td th:text="${videoFile.isM4v}">isM4v</td>-->
+      <!--<td th:text="${videoFile.isWatch}">isWatch</td>-->
+      <td><input class="btn btn-primary" type="submit" value="Reserve"/></td>
+    </form>
+  </tr>
+</table>
+
+</body>
+</html>

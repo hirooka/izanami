@@ -1,0 +1,21 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head></head>
+<body>
+
+<div th:fragment="hls">
+  <div id="hls_video_tag">
+    <div>(native)</div>
+    <video th:src="${html5Player.PlaylistUri}"
+           height="2880"
+           width="5120"
+           controls="controls"
+           autoplay="autoplay"
+           type="application/x-mpegURL">
+    </video>
+  </div>
+</div>
+
+</body>
+</html>

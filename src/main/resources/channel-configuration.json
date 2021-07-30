@@ -1,0 +1,219 @@
+{
+  "channelConfiguration": [
+    {
+      "type": "GR",
+      "channelRemoteControl": 9,
+      "channelRecording": 16,
+      "serviceId": 23608
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 9,
+      "channelRecording": 16,
+      "serviceId": 23610
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 3,
+      "channelRecording": 18,
+      "serviceId": 24632
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 8,
+      "channelRecording": 21,
+      "serviceId": 1056
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 6,
+      "channelRecording": 22,
+      "serviceId": 1048
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 7,
+      "channelRecording": 23,
+      "serviceId": 1072
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 5,
+      "channelRecording": 24,
+      "serviceId": 1064
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 4,
+      "channelRecording": 25,
+      "serviceId": 1040
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 2,
+      "channelRecording": 26,
+      "serviceId": 1032
+    },
+    {
+      "type": "GR",
+      "channelRemoteControl": 1,
+      "channelRecording": 27,
+      "serviceId": 1024
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 101,
+      "channelRecording": 101
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 103,
+      "channelRecording": 103
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 141,
+      "channelRecording": 141
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 151,
+      "channelRecording": 151
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 161,
+      "channelRecording": 161
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 171,
+      "channelRecording": 171
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 181,
+      "channelRecording": 181
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 191,
+      "channelRecording": 191
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 191,
+      "channelRecording": 191
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 192,
+      "channelRecording": 192
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 193,
+      "channelRecording": 193
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 200,
+      "channelRecording": 200
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 201,
+      "channelRecording": 201
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 202,
+      "channelRecording": 202
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 211,
+      "channelRecording": 211
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 222,
+      "channelRecording": 222
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 231,
+      "channelRecording": 231
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 232,
+      "channelRecording": 232
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 233,
+      "channelRecording": 233
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 234,
+      "channelRecording": 234
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 236,
+      "channelRecording": 236
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 238,
+      "channelRecording": 238
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 241,
+      "channelRecording": 241
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 242,
+      "channelRecording": 242
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 243,
+      "channelRecording": 243
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 244,
+      "channelRecording": 244
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 245,
+      "channelRecording": 245
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 251,
+      "channelRecording": 251
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 252,
+      "channelRecording": 252
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 255,
+      "channelRecording": 255
+    },
+    {
+      "type": "BS",
+      "channelRemoteControl": 258,
+      "channelRecording": 258
+    }
+  ]
+}

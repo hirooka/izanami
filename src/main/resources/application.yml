@@ -1,0 +1,142 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+  max-http-header-size: 32KB
+
+spring:
+  application:
+    name: izanami
+  profiles:
+    active: localhost-no-database
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  #flyway:
+  #  schemas: TBD
+  thymeleaf:
+    cache: false
+  http:
+    encoding:
+      force: false # m3u8, ts の Content-Type に ; charset=UTF-8 が付くのを防ぐ
+  jackson:
+    serialization:
+      indent_output: true
+  messages:
+    basename: i18n/messages
+#  servlet:
+#    multipart:
+#      max-file-size: 10MB
+#      max-request-size: 10MB
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+info:
+  app:
+    version: $version
+
+aaa:
+  enabled: true
+  initial-username:
+  initial-password:
+
+system:
+  ffmpeg-path: /usr/local/bin/ffmpeg
+  ffmpeg-threads: 1
+  ffmpeg-vcodec: hevc_nvenc
+  webcam-device-name: /dev/video0
+  webcam-audio-name: default # hw:0,0
+  webcam-audio-channel: 2
+  temporary-path: /tmp/izanami
+  file-path: /opt/izanami/video
+
+common:
+  video-file-extension: ts,m2t,mp4,mov,mpg,mpeg,vob,avi,divx,wmv,flv,ogg,ogm,iso
+
+epg:
+  tuner: tuner.json
+  channel-configuration: channel-configuration.json
+  acquisition-schedule-cron: 0 0 7 * * *
+  acquisition-on-boot-ignored-interval: 86400000 # ms (1 day)
+  old-program-deletion-schedule-cron: 0 0 6 * * *
+
+hls:
+  duration: 2
+  uri-in-playlist: 3
+
+recorder:
+  start-margin: 30
+  stop-margin: 0
+
+ts-server:
+  username: izanagi
+  password: izanagi
+  scheme: http
+  host: localhost
+  port: 8081
+  enabled: true
+  unix-domain-socket-enabled: false
+
+#logging:
+#  file:
+#    path: logs
+#  level:
+#    root: INFO
+#    org:
+#      springframework:
+#        web: INFO
+#      hibernate: ERROR
+
+---
+spring:
+  config:
+    activate:
+      on-profile: localhost-no-database
+server:
+  port: 8080
+---
+spring:
+  config:
+    activate:
+      on-profile: izanami-mongodb
+  # MongoDB
+  # if want to use this application on Docker, change -> ex. "spring.data.mongodb.host=mongo"
+  # spring.data.mongodb.host=mongo
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: izanami
+---
+spring:
+  config:
+    activate:
+      on-profile: izanami-docker
+  data:
+    mongodb:
+      host: izanami-mongo
+      port: 27017
+      database: izanami
+ts-server:
+  username:
+  password:
+  scheme: http
+  host: izanagi
+  port: 8081
+  enabled: true
+  unix-domain-socket-enabled: false

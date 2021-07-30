@@ -1,0 +1,475 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head :: common_header(~{::title}, ~{::link})">
+  <title>izanami</title>
+  <link rel="stylesheet" th:href="@{/css/player.css}"/>
+</head>
+<body>
+
+<div class="container">
+
+  <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+  <span th:text="${#authentication.getPrincipal().authorities}"></span>
+
+  <div id="hlsjs" th:replace="embedded-native-player :: hls"></div>
+
+  <hr/>
+  <button id="ajax_play_button_start" class="btn btn-primary"><span id="ajax_play_button_text">Start</span></button>
+  <hr/>
+
+  <div id="tabs">
+
+    <ul class="nav md-pills pills-secondary">
+      <li class="nav-item" th:if="${isPTxByProgram == true}">
+        <a class="nav-link active" href="#tab-now-content" data-bs-toggle="tab" id="tab-now" role="tab">Tuner</a>
+      </li>
+      <li class="nav-item" th:if="${isPTxByChannel == true}">
+        <a class="nav-link active" href="#tab-channel-content" data-bs-toggle="tab" id="tab-channel"
+           role="tab">Tuner</a>
+      </li>
+      <li class="nav-item" th:if="${isPTxByChannel == true or isPTxByProgram == true}">
+        <a class="nav-link" href="#tab-file-content" data-bs-toggle="tab" id="tab-file" role="tab">Video File</a>
+      </li>
+      <li class="nav-item" th:if="${isPTxByChannel == false and isPTxByProgram == false}">
+        <a class="nav-link active" href="#tab-file-content-active" data-bs-toggle="tab" id="tab-file-active" role="tab">Video
+          File</a>
+      </li>
+      <li class="nav-item" th:if="${isWebCamera == true}">
+        <a class="nav-link" href="#tab-webcam-content" data-bs-toggle="tab" id="tab-webcam" role="tab">Webcam</a>
+      </li>
+      <li class="nav-item" th:if="${isPTxByProgram == true}">
+        <a class="nav-link" href="#tab-okkake-content" data-bs-toggle="tab" id="tab-okkake" role="tab">Okkake(EXPERIMENTAL)</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <!-- Now -->
+
+      <div th:if="${isPTxByProgram == true}" class="tab-pane fade show active" id="tab-now-content" role="tabpanel">
+
+        <form id="form-tab-now">
+
+          <input type="hidden" name="streamingType" value="TUNER"/>
+
+          <div class="form-group">
+            <label>Program</label>
+            <select class="form-control" name="channelRemoteControl">
+              <option th:value="${program.channelRemoteControl}"
+                      th:text="${program.channelName + ' (' + program.channelRemoteControl + '): ' + program.title}"
+                      th:each="program : ${programList}">...
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encoding Settings</label>
+            <select class="form-control" name="transcodingSettings">
+              <option value="CELLULAR_LOW">CELLULAR_LOW</option>
+              <option value="CELLULAR_MID">CELLULAR_MID</option>
+              <option value="CELLULAR_HIGH">CELLULAR_HIGH</option>
+              <option value="WIFI_LOW">WIFI_LOW</option>
+              <option value="WIFI_MID">WIFI_MID</option>
+              <option value="WIFI_HIGH">WIFI_HIGH</option>
+              <option value="HD_LOW">HD_LOW</option>
+              <option value="HD_HIGH" selected="selected">HD_HIGH</option>
+              <option value="FULL_HD_LOW">FULL_HD_LOW</option>
+              <option value="FULL_HD_HIGH">FULL_HD_HIGH</option>
+              <option value="FULL_HD_EXTREME">FULL_HD_EXTREME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encryption</label>
+            <select class="form-control" name="canEncrypt">
+              <option value="true">AES-128/CBC/PKCS7Padding</option>
+              <option value="false" selected="selected">None</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Playlist Type</label>
+            <select class="form-control" name="playlistType">
+              <option value="LIVE" selected="selected">Live</option>
+              <option value="EVENT">Event</option>
+            </select>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- CAPTURE -->
+
+      <div th:if="${isPTxByChannel == true}" class="tab-pane fade show active" id="tab-channel-content" role="tabpanel">
+
+        <form id="form-tab-channel">
+
+          <input type="hidden" name="streamingType" value="TUNER"/>
+
+          <div class="form-group">
+            <label>Channel</label>
+            <select class="form-control" name="channelRemoteControl">
+              <option th:value="${program.channelRemoteControl}" th:text="${program.channelRemoteControl}"
+                      th:each="program : ${programList}">...
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encoding Settings</label>
+            <select class="form-control" id="transcodingSettingsCapture" name="transcodingSettings"
+                    onchange="onChangeTranscodingSettings(this);">
+              <option value="CELLULAR_LOW">CELLULAR_LOW</option>
+              <option value="CELLULAR_MID">CELLULAR_MID</option>
+              <option value="CELLULAR_HIGH">CELLULAR_HIGH</option>
+              <option value="WIFI_LOW">WIFI_LOW</option>
+              <option value="WIFI_MID">WIFI_MID</option>
+              <option value="WIFI_HIGH">WIFI_HIGH</option>
+              <option value="HD_LOW">HD_LOW</option>
+              <option value="HD_HIGH" selected="selected">HD_HIGH</option>
+              <option value="FULL_HD_LOW">FULL_HD_LOW</option>
+              <option value="FULL_HD_HIGH">FULL_HD_HIGH</option>
+              <option value="FULL_HD_EXTREME">FULL_HD_EXTREME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encryption</label>
+            <select class="form-control" name="canEncrypt">
+              <option value="true">AES-128/CBC/PKCS7Padding</option>
+              <option value="false" selected="selected">None</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Playlist Type</label>
+            <select class="form-control" name="playlistType">
+              <option value="LIVE" selected="selected">Live</option>
+              <option value="EVENT">Event</option>
+            </select>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- FILE -->
+
+      <div th:if="${isPTxByChannel == false and isPTxByProgram == false}" class="tab-pane fade show active"
+           id="tab-file-content-active" role="tabpanel">
+
+        <form id="form-tab-file-active">
+
+          <input type="hidden" name="streamingType" value="FILE"/>
+
+          <div class="form-group">
+            <label>File Name</label>
+            <select class="form-control" name="fileName">
+              <option th:value="${videoFileModel.name}" th:text="${videoFileModel.name}"
+                      th:each="videoFileModel : ${videoFileModelList}">...
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encoding Settings</label>
+            <select class="form-control" name="transcodingSettings">
+              <option value="CELLULAR_LOW">CELLULAR_LOW</option>
+              <option value="CELLULAR_MID">CELLULAR_MID</option>
+              <option value="CELLULAR_HIGH">CELLULAR_HIGH</option>
+              <option value="WIFI_LOW">WIFI_LOW</option>
+              <option value="WIFI_MID">WIFI_MID</option>
+              <option value="WIFI_HIGH">WIFI_HIGH</option>
+              <option value="HD_LOW">HD_LOW</option>
+              <option value="HD_HIGH" selected="selected">HD_HIGH</option>
+              <option value="FULL_HD_LOW">FULL_HD_LOW</option>
+              <option value="FULL_HD_HIGH">FULL_HD_HIGH</option>
+              <option value="FULL_HD_EXTREME">FULL_HD_EXTREME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encryption</label>
+            <select class="form-control" name="canEncrypt">
+              <option value="true">AES-128/CBC/PKCS7Padding</option>
+              <option value="false" selected="selected">None</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Playlist Type</label>
+            <select class="form-control" name="playlistType">
+              <option value="LIVE" selected="selected">Live</option>
+              <option value="EVENT">Event</option>
+            </select>
+          </div>
+
+        </form>
+
+      </div>
+
+      <div th:if="${isPTxByChannel == true or isPTxByProgram == true}" class="tab-pane fade" id="tab-file-content"
+           role="tabpanel">
+
+        <form id="form-tab-file">
+
+          <input type="hidden" name="streamingType" value="FILE"/>
+
+          <div class="form-group">
+            <label>File Name</label>
+            <select class="form-control" name="fileName">
+              <option th:value="${videoFileModel.name}" th:text="${videoFileModel.name}"
+                      th:each="videoFileModel : ${videoFileModelList}">...
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encoding Settings</label>
+            <select class="form-control" name="transcodingSettings">
+              <option value="CELLULAR_LOW">CELLULAR_LOW</option>
+              <option value="CELLULAR_MID">CELLULAR_MID</option>
+              <option value="CELLULAR_HIGH">CELLULAR_HIGH</option>
+              <option value="WIFI_LOW">WIFI_LOW</option>
+              <option value="WIFI_MID">WIFI_MID</option>
+              <option value="WIFI_HIGH">WIFI_HIGH</option>
+              <option value="HD_LOW">HD_LOW</option>
+              <option value="HD_HIGH" selected="selected">HD_HIGH</option>
+              <option value="FULL_HD_LOW">FULL_HD_LOW</option>
+              <option value="FULL_HD_HIGH">FULL_HD_HIGH</option>
+              <option value="FULL_HD_EXTREME">FULL_HD_EXTREME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encryption</label>
+            <select class="form-control" name="canEncrypt">
+              <option value="true">AES-128/CBC/PKCS7Padding</option>
+              <option value="false" selected="selected">None</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Playlist Type</label>
+            <select class="form-control" name="playlistType">
+              <option value="LIVE">Live</option>
+              <option value="EVENT" selected="selected">Event</option>
+            </select>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- OKKAKE -->
+
+      <div class="tab-pane fade" id="tab-okkake-content" role="tabpanel">
+
+        <form id="form-tab-okkake">
+
+          <input type="hidden" name="streamingType" value="OKKAKE"/>
+
+          <div class="form-group">
+            <label>File Name</label>
+            <select class="form-control" name="fileName">
+              <option th:value="${okkakeVideoFileModel.name}" th:text="${okkakeVideoFileModel.name}"
+                      th:each="okkakeVideoFileModel : ${okkakeVideoFileModelList}">...
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encoding Settings</label>
+            <select class="form-control" name="transcodingSettings">
+              <option value="CELLULAR_LOW">CELLULAR_LOW</option>
+              <option value="CELLULAR_MID">CELLULAR_MID</option>
+              <option value="CELLULAR_HIGH">CELLULAR_HIGH</option>
+              <option value="WIFI_LOW">WIFI_LOW</option>
+              <option value="WIFI_MID">WIFI_MID</option>
+              <option value="WIFI_HIGH">WIFI_HIGH</option>
+              <option value="HD_LOW">HD_LOW</option>
+              <option value="HD_HIGH" selected="selected">HD_HIGH</option>
+              <option value="FULL_HD_LOW">FULL_HD_LOW</option>
+              <option value="FULL_HD_HIGH">FULL_HD_HIGH</option>
+              <option value="FULL_HD_EXTREME">FULL_HD_EXTREME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encryption</label>
+            <select class="form-control" name="canEncrypt">
+              <option value="true">AES-128/CBC/PKCS7Padding</option>
+              <option value="false" selected="selected">None</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Playlist Type</label>
+            <select class="form-control" name="playlistType">
+              <option value="LIVE" selected="selected">Live</option>
+              <option value="EVENT">Event</option>
+            </select>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- WEB_CAMERA -->
+
+      <div class="tab-pane fade" id="tab-webcam-content" role="tabpanel">
+
+        <form id="form-tab-webcam">
+
+          <input type="hidden" name="streamingType" value="WEBCAM"/>
+
+          <div class="form-group">
+            <label>Encoding Settings</label>
+            <select class="form-control" name="transcodingSettings">
+              <option value="CELLULAR_LOW">CELLULAR_LOW</option>
+              <option value="CELLULAR_MID">CELLULAR_MID</option>
+              <option value="CELLULAR_HIGH">CELLULAR_HIGH</option>
+              <option value="WIFI_LOW">WIFI_LOW</option>
+              <option value="WIFI_MID">WIFI_MID</option>
+              <option value="WIFI_HIGH">WIFI_HIGH</option>
+              <option value="HD_LOW">HD_LOW</option>
+              <option value="HD_HIGH" selected="selected">HD_HIGH</option>
+              <option value="FULL_HD_LOW">FULL_HD_LOW</option>
+              <option value="FULL_HD_HIGH">FULL_HD_HIGH</option>
+              <option value="FULL_HD_EXTREME">FULL_HD_EXTREME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Encryption</label>
+            <select class="form-control" name="canEncrypt">
+              <option value="true">AES-128/CBC/PKCS7Padding</option>
+              <option value="false" selected="selected">None</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Playlist Type</label>
+            <select class="form-control" name="playlistType">
+              <option value="LIVE" selected="selected">Live</option>
+              <option value="EVENT">Event</option>
+            </select>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+  <hr/>
+  <div th:replace="footer :: footer"></div>
+
+</div>
+
+<script th:inline="javascript">
+
+  const username = [[${#authentication.getPrincipal().getUsername()}]];
+
+  const isPTxByProgram = [[${isPTxByProgram}]];
+  const isPTxByChannel = [[${isPTxByChannel}]];
+  const isWebcam = [[${isWebCamera}]];
+
+  let selectedTabId = 'tab-now';
+  if (isPTxByProgram) {
+    selectedTabId = 'tab-now';
+  } else if (isPTxByChannel) {
+    selectedTabId = 'tab-channel';
+  } else {
+    selectedTabId = 'tab-file-active';
+  }
+
+  $(function () {
+
+    $('#ajax_play_button_start').on('click', function () {
+
+      console.log("selectedTabId = " + selectedTabId);
+
+      const formId = 'form-' + selectedTabId;
+
+      const buttonId = $(this).attr('id');
+
+      if (buttonId == 'ajax_play_button_start') {
+
+        const url = '/izanami/';
+        const jsonData = {
+          "streamingType": $('#' + formId + ' [name=streamingType]').val(),
+          "playlistType": $('#' + formId + ' [name=playlistType]').val(),
+          "transcodingSettings": $('#' + formId + ' [name=transcodingSettings]').val(),
+          "canEncrypt": $('#' + formId + ' [name=canEncrypt]').val(),
+          "channelRemoteControl": $('#' + formId + ' [name=channelRemoteControl]').val(),
+          "fileName": $('#' + formId + ' [name=fileName]').val(),
+          "videoResolution": null,
+          "videoBitrate": "0",
+          "audioBitrate": 0,
+          "username": username
+        };
+        // "streamingType" : $('#form [name=streamingType]').val(),
+        //alert(JSON.stringify(jsonData));
+
+        $.ajax({
+          type: 'post',
+          url: url,
+          data: JSON.stringify(jsonData),
+          contentType: 'application/json',
+          dataType: 'html',
+          headers: {
+            'X-CSRF-TOKEN': [[ ${_csrf.token}]],
+          },
+          scriptCharset: 'utf-8',
+          success: function (data) {
+            $('#hls_video_tag').html(data);
+          },
+          error: function (data) {
+            //
+          }
+        });
+
+        $(this).attr("id", "ajax_play_button_stop");
+        $(this).attr("class", "btn btn-warning");
+        $("#ajax_play_button_text").text("Stop");
+
+      } else if (buttonId == 'ajax_play_button_stop') {
+
+        const url = '/izanami/stop';
+        $.ajax({
+          type: 'get',
+          url: url,
+          headers: {
+            'X-CSRF-TOKEN': [[ ${_csrf.token}]],
+          },
+          scriptCharset: 'utf-8',
+          success: function (data) {
+            $('#hls_video_tag').html(data);
+          },
+          error: function (data) {
+            //
+          }
+        });
+
+        $(this).attr('id', "ajax_play_button_start");
+        $(this).attr("class", "btn btn-primary");
+        $("#ajax_play_button_text").text("Start");
+      }
+
+    });
+
+  });
+
+  $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+    const activated_tab = e.target // activated tab
+    const previous_tab = e.relatedTarget // previous tab
+    selectedTabId = $(e.target).attr('id');
+  })
+</script>
+
+</body>
+</html>

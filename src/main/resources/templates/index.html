@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head :: common_header(~{::title},~{})">
+  <title>izanami</title>
+</head>
+
+<body>
+
+<div class="container">
+
+  <hr/>
+
+  <a href="/izanami">
+    <button type="button" class="btn btn-primary">izanami</button>
+  </a>
+
+  <hr/>
+
+  <a href="/programs/now">
+    <button type="button" class="btn btn-primary">Program Table</button>
+  </a>
+
+  <hr/>
+
+  <div th:replace="footer :: footer"></div>
+
+</div>
+
+</body>
+</html>

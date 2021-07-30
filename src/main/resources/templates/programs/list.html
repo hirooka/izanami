@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head :: common_header(~{::title},~{})">
+  <title>...</title>
+
+  <style>
+      th, td {
+          white-space: nowrap;
+      }
+
+      div.dataTables_wrapper {
+          width: 800px;
+          margin: 0 auto;
+      }
+  </style>
+
+</head>
+
+<body>
+
+<!--<div class="container">-->
+
+<table id="programs" class="stripe row-border order-column" style="width:100%">
+
+  <thead>
+  <tr>
+    <th>name/ch</th>
+    <span th:each="programList : ${listOfProgramList}">
+        <th th:text="${programList[0].channelName}"></th>
+      </span>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr>
+
+    <td>
+      <table border="1" width="60px">
+        <tbody>
+        <tr th:each="hour : ${hourList}">
+          <td th:text="${hour}" height="60px" align="center"></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+
+    <td th:each="programList : ${listOfProgramList}">
+      <table border="1" width="480px">
+        <tbody>
+        <tr th:each="program : ${programList}">
+          <td th:height="${program.height}">
+            <div><span th:text="${program.beginDate}"></span> - <span th:text="${program.endDate}"></span></div>
+            <br>
+            <div th:text="${program.title}"></div>
+            <br>
+            <div th:text="${program.detail}"></div>
+
+            <form th:action="@{/programs/create}" method="post" th:object="${reservedProgram}" th:scope="row">
+              <input th:value="${program.channelRecording}" type="hidden" id="channelRecording"
+                     name="channelRecording"/>
+              <input th:value="${program.channelRemoteControl}" type="hidden" id="channelRemoteControl"
+                     name="channelRemoteControl"/>
+              <input th:value="${program.channelName}" type="hidden" id="channelName" name="channelName"/>
+              <input th:value="${program.start}" type="hidden" id="start" name="start"/>
+              <input th:value="${program.end}" type="hidden" id="end" name="end"/>
+              <input th:value="${program.beginDate}" type="hidden" id="beginDate" name="beginDate"/>
+              <input th:value="${program.endDate}" type="hidden" id="endDate" name="endDate"/>
+              <input th:value="${program.duration}" type="hidden" id="duration" name="duration"/>
+              <input th:value="${program.title}" type="hidden" id="title" name="title"/>
+              <input th:value="${program.detail}" type="hidden" id="detail" name="detail"/>
+              <input th:value="${program.channel}" type="hidden" id="channel" name="channel"/>
+
+              <!--<td th:text="${program.beginDate}">beginDate</td>-->
+              <!--<td th:text="${program.endDate}">endDate</td>-->
+
+              <!--<td th:text="${program.detail}">summary</td>-->
+              <input class="btn btn-primary" type="submit" value="Reserve"/>
+            </form>
+
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </td>
+
+  </tr>
+
+  </tbody>
+
+</table>
+
+<!--<table class="table">-->
+<!--<thead>-->
+<!--<tr class="table-success">-->
+<!--<th scope="col">#</th>-->
+<!--<th scope="col">Station</th>-->
+<!--<th scope="col">Begin</th>-->
+<!--<th scope="col">End</th>-->
+<!--<th scope="col">Title</th>-->
+<!--<th scope="col">Suumary</th>-->
+<!--<th scope="col">Reserve</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr th:each="program : ${programList}">-->
+<!--<form th:action="@{/programs/create}" method="post" th:object="${reservedProgram}" th:scope="row">-->
+<!--<input th:value="${program.channelRecording}" type = "hidden" id = "channelRecording" name = "channelRecording"/>-->
+<!--<input th:value="${program.channelRemoteControl}" type = "hidden" id = "channelRemoteControl" name = "channelRemoteControl"/>-->
+<!--<input th:value="${program.channelName}" type = "hidden" id = "channelName" name = "channelName"/>-->
+<!--<input th:value="${program.start}" type = "hidden" id = "start" name = "start"/>-->
+<!--<input th:value="${program.end}" type = "hidden" id = "end" name = "end"/>-->
+<!--<input th:value="${program.beginDate}" type = "hidden" id = "beginDate" name = "beginDate"/>-->
+<!--<input th:value="${program.endDate}" type = "hidden" id = "endDate" name = "endDate"/>-->
+<!--<input th:value="${program.duration}" type = "hidden" id = "duration" name = "duration"/>-->
+<!--<input th:value="${program.title}" type = "hidden" id = "title" name = "title"/>-->
+<!--<input th:value="${program.detail}" type = "hidden" id = "detail" name = "detail"/>-->
+<!--<input th:value="${program.channel}" type = "hidden" id = "channel" name = "channel"/>-->
+<!--&lt;!&ndash;<td th:text="${program.physicalLogicalChannel}">physicalLogicalChannel</td>&ndash;&gt;-->
+<!--<td th:text="${program.channelRemoteControl}">channelRemoteControl</td>-->
+<!--<td th:text="${program.channelName}">channelName</td>-->
+<!--&lt;!&ndash;<td th:text="${program.start}">start</td>&ndash;&gt;-->
+<!--&lt;!&ndash;<td th:text="${program.end}">end</td>&ndash;&gt;-->
+<!--<td th:text="${program.beginDate}">beginDate</td>-->
+<!--<td th:text="${program.endDate}">endDate</td>-->
+<!--&lt;!&ndash;<td th:text="${program.duration}">duration</td>&ndash;&gt;-->
+<!--<td th:text="${program.title}">title</td>-->
+<!--<td th:text="${program.detail}">summary</td>-->
+<!--<td><input class="btn btn-primary" type="submit" value="Reserve"/></td>-->
+<!--</form>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+
+<div th:insert="footer :: footer"></div>
+
+<script>
+  $(document).ready(function () {
+    $('#programs').DataTable({
+      scrollY: 1024,
+      scrollX: true,
+      scrollCollapse: true,
+      paging: false,
+      fixedColumns: true,
+      searching: false,
+      info: false,
+      fixedColumns: {
+        leftColumns: 1
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

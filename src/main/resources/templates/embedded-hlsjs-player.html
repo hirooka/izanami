@@ -1,0 +1,34 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head></head>
+<body>
+
+<div th:fragment="hls">
+  <div id="hls_video_tag">
+    <div>(hls.js)</div>
+    <script src="/js/hlsjs/hls.min.js"></script>
+    <video height="2880"
+           width="5120"
+           controls="controls"
+           autoplay="autoplay"
+           type="application/x-mpegURL"
+           id="player">
+    </video>
+    <script th:inline="javascript">
+      var m3u8 = [[${html5Player.PlaylistUri}]];
+      if (Hls.isSupported()) {
+        var video = document.getElementById('player');
+        var hls = new Hls();
+        hls.loadSource(m3u8);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      }
+    </script>
+  </div>
+</div>
+
+</body>
+</html>
