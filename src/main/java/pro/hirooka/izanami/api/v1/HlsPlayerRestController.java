@@ -88,9 +88,6 @@ public class HlsPlayerRestController {
 
     final String userAgent = httpServletRequest.getHeader("user-agent");
     log.info("user-agent: {}", userAgent);
-    if (!userAgent.contains(Constants.USER_AGENT)) {
-      throw new IllegalArgumentException("Invalid User-Agent");
-    }
 
     //final String servletRealPath =
     //    httpServletRequest.getSession().getServletContext().getRealPath("");

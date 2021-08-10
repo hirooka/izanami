@@ -16,7 +16,6 @@ public class Constants {
   public static final String HLS_IV_FILE_EXTENSION = ".iv";
   public static final int HLS_KEY_LENGTH = 128;
   public static final int MPEG2_TS_PACKET_LENGTH = 188;
-  public static final String USER_AGENT = "izanami-ios";
   public static final String DEFAULT_USERNAME = "izanami";
   public static final String DEFAULT_PASSWORD = DEFAULT_USERNAME;
   public static final String DEFAULT_TS_SERVER_USERNAME = "izanagi";
