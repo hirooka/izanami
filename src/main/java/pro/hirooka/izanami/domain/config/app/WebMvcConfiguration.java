@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -16,5 +17,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**").allowedOrigins("*");
   }
 }
