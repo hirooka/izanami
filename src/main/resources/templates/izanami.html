@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:replace="head :: common_header(~{::title}, ~{::link})">
   <title>izanami</title>
@@ -9,8 +9,12 @@
 
 <div class="container">
 
-  <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-  <span th:text="${#authentication.getPrincipal().authorities}"></span>
+  <div th:if="${#authorization.expression('principal == ''anonymousUser''')}">
+    <span th:text="${#authentication.getPrincipal()}"></span>
+  </div>
+  <div th:if="${#authorization.expression('principal != ''anonymousUser''')}">
+   <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+  </div>
 
   <div id="hlsjs" th:replace="embedded-native-player :: hls"></div>
 
@@ -372,7 +376,16 @@
 
 <script th:inline="javascript">
 
-  const username = [[${#authentication.getPrincipal().getUsername()}]];
+  let username = '';
+  let token = '';
+  [# th:if="${#authorization.expression('principal != ''anonymousUser''')}"]
+    username = [[${#authentication.getPrincipal().getUsername()}]];
+    token = [[ ${_csrf.token} ]];
+  [/]
+  [# th:if="${#authorization.expression('principal == ''anonymousUser''')}"]
+    username = 'izanami';
+    token = '';
+  [/]
 
   const isPTxByProgram = [[${isPTxByProgram}]];
   const isPTxByChannel = [[${isPTxByChannel}]];
@@ -422,7 +435,7 @@
           contentType: 'application/json',
           dataType: 'html',
           headers: {
-            'X-CSRF-TOKEN': [[ ${_csrf.token}]],
+            'X-CSRF-TOKEN': token,
           },
           scriptCharset: 'utf-8',
           success: function (data) {
@@ -444,7 +457,7 @@
           type: 'get',
           url: url,
           headers: {
-            'X-CSRF-TOKEN': [[ ${_csrf.token}]],
+            'X-CSRF-TOKEN': token,
           },
           scriptCharset: 'utf-8',
           success: function (data) {
