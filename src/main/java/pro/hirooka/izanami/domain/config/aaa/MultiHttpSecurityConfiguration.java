@@ -97,7 +97,12 @@ public class MultiHttpSecurityConfiguration {
 
     @Override
     public void configure(WebSecurity web) {
-      web.ignoring().antMatchers("/images/**", "/webjars/**");
+      web.ignoring().antMatchers(
+          "/images/**",
+          "/webjars/**",
+          "/stream/**",
+          "/istream/**"
+      );
     }
   }
 
@@ -180,7 +185,12 @@ public class MultiHttpSecurityConfiguration {
 
     @Override
     public void configure(WebSecurity web) {
-      web.ignoring().antMatchers("/images/**", "/webjars/**");
+      web.ignoring().antMatchers(
+          "/images/**",
+          "/webjars/**",
+          "/stream/**",
+          "/istream/**"
+      );
     }
   }
 }
