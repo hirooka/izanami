@@ -51,7 +51,7 @@ info:
     version: $version
 
 aaa:
-  enabled: true
+  enabled: false
   initial-username:
   initial-password:
 
