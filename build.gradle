@@ -38,10 +38,10 @@ dependencies {
   implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
   // OpenAPI
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.10'
 
   // Micrometer Registry Prometheus
-  implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.7.2'
+  implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.7.3'
 
   // Lombok
   compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
