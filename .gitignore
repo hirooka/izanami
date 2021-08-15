@@ -43,6 +43,4 @@ secrets.yml
 .gradletasknamecache
 .sts4-cache
 
-Dockerfile
-tuner.json
 docs/
