@@ -61,7 +61,7 @@ public class SystemService implements ISystemService {
     if (mongoDbConfiguration.getHost() == null) {
       return false;
     }
-    if (mongoDbConfiguration.getHost().equals("mongo")) {
+    if (mongoDbConfiguration.getHost().equals("izanami-mongo")) {
       return true;
     }
     final MongoClient mongoClient = MongoClients.create();
