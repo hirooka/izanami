@@ -179,6 +179,25 @@ public class FfmpegService implements IFfmpegService {
             "-hls_fmp4_init_filename", FMP4_INIT_FILE_NAME + FMP4_INIT_FILE_EXTENSION,
             ffmpegM3U8OutputPath
         };
+      } else if (ffmpegVcodecType.equals(FfmpegVcodecType.H264_V4L2M2M)) {
+        commandArray = new String[]{
+            playbackModel.getSystemConfiguration().getFfmpegPath(),
+            "-i", uri,
+            "-sn",
+            "-acodec", "aac",
+            "-ab", playbackModel.getPlaybackSettings().getAudioBitrate() + "k",
+            "-ar", "48000",
+            "-ac", "2",
+            "-s", playbackModel.getPlaybackSettings().getVideoResolution(),
+            "-vcodec", "h264_v4l2m2m",
+            "-g", "10",
+            "-b:v", playbackModel.getPlaybackSettings().getVideoBitrate() + "k",
+            "-threads", Integer.toString(playbackModel.getSystemConfiguration().getFfmpegThreads()),
+            "-f", "hls",
+            "-hls_time", Integer.toString(playbackModel.getHlsConfiguration().getDuration()),
+            "-hls_segment_filename", ffmpegOutputPath,
+            ffmpegM3U8OutputPath
+        };
       } else {
         //
       }
@@ -238,6 +257,32 @@ public class FfmpegService implements IFfmpegService {
             //"-hls_segment_filename", ffmpegOutputPath,
             ffmpegM3U8OutputPath
         };
+      } else if (ffmpegVcodecType.equals(FfmpegVcodecType.H264_V4L2M2M)) {
+        commandArray = new String[]{
+            playbackModel.getSystemConfiguration().getFfmpegPath(),
+            "-f", "video4linux2",
+            "-s", playbackModel.getPlaybackSettings().getVideoResolution(),
+            //"-r", "30",
+            "-i", playbackModel.getSystemConfiguration().getWebcamDeviceName(),
+            "-f", "alsa",
+            "-ac", Integer.toString(playbackModel.getSystemConfiguration().getWebcamAudioChannel()),
+            //                        "-i", "hw:0,0",
+            "-i", playbackModel.getSystemConfiguration().getWebcamAudioName(),
+            "-acodec", "aac",
+            "-ab", playbackModel.getPlaybackSettings().getAudioBitrate() + "k",
+            "-ar", "44100",
+            "-s", playbackModel.getPlaybackSettings().getVideoResolution(),
+            "-vcodec", "h264_v4l2m2m",
+            //"-vf", "yadif",
+            "-g", "10",
+            "-b:v", playbackModel.getPlaybackSettings().getVideoBitrate() + "k",
+            "-pix_fmt", "yuv420p",
+            "-threads", Integer.toString(playbackModel.getSystemConfiguration().getFfmpegThreads()),
+            "-f", "hls",
+            "-hls_time", Integer.toString(playbackModel.getHlsConfiguration().getDuration()),
+            "-hls_segment_filename", ffmpegOutputPath,
+            ffmpegM3U8OutputPath
+        };
       } else {
         //
       }
@@ -283,6 +328,25 @@ public class FfmpegService implements IFfmpegService {
             "-hls_time", Integer.toString(playbackModel.getHlsConfiguration().getDuration()),
             "-hls_fmp4_init_filename", fmp4InitFileOutputPath,
             //"-hls_segment_filename", ffmpegOutputPath,
+            ffmpegM3U8OutputPath
+        };
+      } else if (ffmpegVcodecType.equals(FfmpegVcodecType.H264_V4L2M2M)) {
+        commandArray = new String[]{
+            playbackModel.getSystemConfiguration().getFfmpegPath(),
+            "-i", playbackModel.getSystemConfiguration().getFilePath() + FILE_SEPARATOR
+            + playbackModel.getPlaybackSettings().getFileName(),
+            "-acodec", "aac",
+            "-ab", playbackModel.getPlaybackSettings().getAudioBitrate() + "k",
+            "-ac", "2",
+            "-ar", "44100",
+            "-s", playbackModel.getPlaybackSettings().getVideoResolution(),
+            "-vcodec", "h264_v4l2m2m",
+            "-g", "10",
+            "-b:v", playbackModel.getPlaybackSettings().getVideoBitrate() + "k",
+            "-threads", Integer.toString(playbackModel.getSystemConfiguration().getFfmpegThreads()),
+            "-f", "hls",
+            "-hls_time", Integer.toString(playbackModel.getHlsConfiguration().getDuration()),
+            "-hls_segment_filename", ffmpegOutputPath,
             ffmpegM3U8OutputPath
         };
       } else {

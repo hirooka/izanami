@@ -5,5 +5,6 @@ public enum FfmpegVcodecType {
   H264_NVENC,
   HEVC_VIDEOTOOLBOX,
   H264_VIDEOTOOLBOX,
+  H264_V4L2M2M,
   UNKNOWN
 }

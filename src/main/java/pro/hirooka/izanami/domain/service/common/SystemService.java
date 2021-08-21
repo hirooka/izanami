@@ -113,6 +113,9 @@ public class SystemService implements ISystemService {
 
   @Override
   public FfmpegVcodecType getFfmpegVcodecType(final String userAgent) {
+    if (ffmpegVcodec.equalsIgnoreCase(FfmpegVcodecType.H264_V4L2M2M.name())) {
+      return FfmpegVcodecType.H264_V4L2M2M;
+    }
     if (isChrome(userAgent) || isEdge(userAgent)) {
       return FfmpegVcodecType.H264_NVENC;
     } else if (isSafari(userAgent)) {
