@@ -50,6 +50,8 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
 # izanami
 RUN mkdir -p /opt/izanami/video
+COPY . .
+RUN ./gradlew build
 ADD ./build/libs/izanami-1.0.0-SNAPSHOT.jar izanami.jar
 
 # locale
