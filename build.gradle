@@ -33,7 +33,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
   // HLS
-  implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.69'
+  implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
   implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
