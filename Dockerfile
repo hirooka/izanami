@@ -19,7 +19,7 @@ RUN apt-get install -y --no-install-recommends \
   # FFmpeg
   pkg-config nasm yasm \
   # Java
-  openjdk-11-jre-headless && \
+  openjdk-17-jre-headless && \
   apt-get -y clean && \
   rm -rf /var/lib/apt/lists/*
 
