@@ -46,7 +46,7 @@ RUN cd /tmp && \
 RUN rm -rf /tmp/*
 
 # Java
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 
 # izanami
 RUN mkdir -p /opt/izanami/video
