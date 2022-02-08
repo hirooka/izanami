@@ -73,7 +73,7 @@ configurations.all {
 }
 
 checkstyle {
-  toolVersion '9.2'
+  toolVersion '9.3'
 }
 
 springBoot {
