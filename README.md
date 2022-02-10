@@ -12,11 +12,38 @@ HTTP Live Streaming (HLS) Server Application
 
 ## Getting Started
 
+The easiest way to run application is to use Docker with `nvidia/cuda`. In this case you need install Docker on Ubuntu 20.04 ([Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)).
+
+### Build application Docker image
+
 ```
 git clone https://github.com/hirooka/izanami
 cd izanami
 ./gradlew build
-java -Dspring.profiles.active=localhost-no-database -jar build/libs/izanami-1.0.0-SNAPSHOT.jar
+docker build . -t $USER/izanami:1.0.0-SNAPSHOT
+```
+
+### Run Application (with MongoDB and Docker network)
+
+```
+docker network create nihon
+docker pull mongo:bionic
+docker run \
+  --name izanami-mongo \
+  --net nihon \
+  -d \
+  mongo:bionic
+docker build . -t $USER/izanami:1.0.0-SNAPSHOT
+docker run \
+  --name izanami \
+  --net nihon \
+  --privileged \
+  --volume /dev/:/dev/ \
+  --volume /opt/izanami/video:/opt/izanami/video \
+  --volume /etc/localtime:/etc/localtime:ro \
+  -p 8080:8080 \
+  -d \
+  -it $USER/izanami:1.0.0-SNAPSHOT
 ```
 
 You can start playback via
@@ -52,5 +79,3 @@ You can stop playback via
 ```
 curl http://izanami:izanami@localhost:8080/api/v1/izanami/stop
 ```
-
-It also works with Docker using `nvidia/cuda`. see [Dockerfile](Dockerfile).
