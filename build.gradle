@@ -44,8 +44,8 @@ dependencies {
   implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.8.5'
 
   // Lombok
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 }
 
 bootJar {
