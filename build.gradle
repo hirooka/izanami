@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.6.6'
+  id 'org.springframework.boot' version '2.6.7'
   id 'com.gorylenko.gradle-git-properties' version '2.4.0'
   id 'com.palantir.git-version' version '0.15.0'
   id 'checkstyle'
@@ -11,8 +11,11 @@ apply plugin: 'io.spring.dependency-management'
 group 'pro.hirooka'
 version version
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
 
 repositories {
   mavenCentral()
@@ -38,14 +41,14 @@ dependencies {
   implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
   // OpenAPI
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.7'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.8'
 
   // Micrometer Registry Prometheus
   implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.8.5'
 
   // Lombok
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 }
 
 bootJar {
@@ -73,7 +76,7 @@ configurations.all {
 }
 
 checkstyle {
-  toolVersion '9.3'
+  toolVersion '10.2'
 }
 
 springBoot {
