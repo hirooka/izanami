@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.4.1-devel-ubuntu20.04
+FROM nvidia/cuda:11.6.0-devel-ubuntu20.04
 
 MAINTAINER dev
 
@@ -35,9 +35,9 @@ RUN cd /tmp && \
     make install
 
 RUN cd /tmp && \
-    wget https://ffmpeg.org/releases/ffmpeg-4.4.tar.gz && \
-    tar zxvf ffmpeg-4.4.tar.gz && \
-    cd ffmpeg-4.4 && \
+    wget https://ffmpeg.org/releases/ffmpeg-5.0.1.tar.gz && \
+    tar zxvf ffmpeg-5.0.1.tar.gz && \
+    cd ffmpeg-5.0.1 && \
     ./configure --enable-nonfree --enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --nvccflags="-gencode arch=compute_52,code=sm_52 -O2" && \
     make -j$(nproc) && \
     make install
