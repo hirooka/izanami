@@ -4,7 +4,7 @@ HTTP Live Streaming (HLS) Server Application
 
 ## Prerequisites
 
-- Linux PC (Ubuntu 20.04)
+- Linux PC (Ubuntu 22.04)
 - NVIDIA GPU (GeForce 10 series) and its driver (NVIDIA-SMI 510.60.02, Driver Version: 510.60.02, CUDA Version: 11.6)
 - FFmpeg 5.0
 - Java 17
@@ -12,7 +12,7 @@ HTTP Live Streaming (HLS) Server Application
 
 ## Getting Started
 
-The easiest way to run application is to use Docker with `nvidia/cuda`. In this case you need install Docker on Ubuntu 20.04 ([Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)).
+The easiest way to run application is to use Docker with [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda). In this case you need install Docker on Ubuntu 22.04 ([Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)).
 
 ### Build application Docker image
 
@@ -27,14 +27,15 @@ docker build . -t $USER/izanami:1.0.0-SNAPSHOT
 
 ```
 docker network create nihon
-docker pull mongo:bionic
+docker pull mongo:5.0
 docker run \
+  --rm \
   --name izanami-mongo \
   --net nihon \
   -d \
-  mongo:bionic
-docker build . -t $USER/izanami:1.0.0-SNAPSHOT
+  mongo:5.0
 docker run \
+  --rm \
   --name izanami \
   --net nihon \
   --privileged \
@@ -78,4 +79,12 @@ You can stop playback via
 
 ```
 curl http://izanami:izanami@localhost:8080/api/v1/izanami/stop
+```
+
+### Clean Application
+
+```
+docker stop izanami
+docker stop izanami-mongo
+docker network rm nihon
 ```
