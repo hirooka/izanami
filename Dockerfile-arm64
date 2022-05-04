@@ -42,6 +42,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-arm64
 RUN mkdir -p /opt/izanami/video
 RUN cd /tmp
 COPY . .
+RUN sed -i -e 's/hevc_nvenc/h264_v4l2m2m/g' src/main/resources/application.yml
 RUN ./gradlew build
 RUN mv ./build/libs/izanami-1.0.0-SNAPSHOT.jar /izanami.jar
 
