@@ -4,11 +4,11 @@ HTTP Live Streaming (HLS) Server Application
 
 ## Prerequisites
 
-- Linux PC (Ubuntu 22.04)
+- Linux PC (Ubuntu 22.04, Raspberry Pi OS (64bit))
 - NVIDIA GPU (GeForce 10 series) and its driver (NVIDIA-SMI 510.60.02, Driver Version: 510.60.02, CUDA Version: 11.6)
 - FFmpeg 5.0
 - Java 17
-- [Izanagi](https://github.com/hirooka/izanagi) (If you want to play stream of MPEG2-Ts tuner)
+- [Izanagi](https://github.com/hirooka/izanagi) (If you want to play stream of MPEG2-TS tuner)
 
 ## Getting Started
 
@@ -21,6 +21,8 @@ git clone https://github.com/hirooka/izanami
 cd izanami
 ./gradlew build
 docker build . -t $USER/izanami:1.0.0-SNAPSHOT
+# Raspberry Pi 4
+# docker build -f Dockerfile-arm64 . -t $USER/izanami:1.0.0-SNAPSHOT
 ```
 
 ### Run Application (with MongoDB and Docker network)
