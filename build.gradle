@@ -3,6 +3,7 @@ plugins {
   id 'com.gorylenko.gradle-git-properties' version '2.4.1'
   id 'com.palantir.git-version' version '0.15.0'
   id 'checkstyle'
+  id 'jacoco'
 }
 
 apply plugin: 'java'
@@ -63,6 +64,7 @@ bootRun {
 
 test {
   useJUnitPlatform()
+  finalizedBy jacocoTestReport
   if (project.hasProperty("jvmArgs")) {
     jvmArgs = (project.jvmArgs.split("\\s+") as List)
   }
@@ -77,6 +79,7 @@ configurations.all {
 
 checkstyle {
   toolVersion '10.2'
+  configFile = file('config/checkstyle/checkstyle.xml')
 }
 
 springBoot {
@@ -89,8 +92,35 @@ task showVersion {
   }
 }
 
-processResources {
-  filesMatching("**/application.yml") {
-    expand(project.properties)
+List jacocoExcludes = [
+        'example/domain/dto/*',
+        'example/Application.class'
+]
+
+jacocoTestReport {
+  dependsOn test
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, excludes: jacocoExcludes)
+    }))
+  }
+  finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, excludes: jacocoExcludes)
+    }))
+  }
+  violationRules {
+    rule {
+      enabled = false
+      limit {
+        minimum = 0.6
+        // https://testing.googleblog.com/2020/08/code-coverage-best-practices.html
+        // https://testing.googleblog.com/2014/07/measuring-coverage-at-google.html
+      }
+    }
   }
 }

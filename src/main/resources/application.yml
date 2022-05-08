@@ -46,10 +46,6 @@ management:
       exposure:
         include: health, info
 
-info:
-  app:
-    version: $version
-
 aaa:
   enabled: false
   initial-username:

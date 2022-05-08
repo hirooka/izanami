@@ -5,15 +5,21 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
+import org.springframework.boot.info.GitProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
 
-  @Value("${info.app.version}")
-  String version;
+    private final BuildProperties buildProperties;
+    private final GitProperties gitProperties;
+
+    public OpenApiConfig(BuildProperties buildProperties, GitProperties gitProperties) {
+      this.buildProperties = buildProperties;
+      this.gitProperties = gitProperties;
+    }
 
   @Bean
   public OpenAPI customOpenApi() {
@@ -30,7 +36,7 @@ public class OpenApiConfig {
         ).info(
             new Info()
                 .title("API")
-                .version(version)
+                .version(buildProperties.getVersion() + "." + gitProperties.getShortCommitId())
                 .description("API")
                 .termsOfService("")
                 .license(
