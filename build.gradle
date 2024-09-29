@@ -78,7 +78,7 @@ configurations.all {
 }
 
 checkstyle {
-  toolVersion '10.2'
+  toolVersion '10.18.2'
   configFile = file('config/checkstyle/checkstyle.xml')
 }
 
